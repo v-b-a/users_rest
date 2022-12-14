@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-master.yaml
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        createTable:
+          tableName: users
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: name
+                type: varchar(50)
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - renameColumn:
+            columnDataType: varchar(50)
+            newColumnName: username
+            oldColumnName: name
+            schemaName: public
+            tableName: users
