@@ -12,7 +12,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     private Status status;
     @OneToOne(cascade = CascadeType.ALL)
     private User user;

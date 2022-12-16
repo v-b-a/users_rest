@@ -9,12 +9,18 @@ import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.Document;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.User;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.CarDto;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserDto;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -79,12 +87,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDto userDto) {
-        User user = new User(userDto.getUsername());
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setOrder(null);
+        user.setCars(null);
         userRepository.save(user);
     }
 
     @Override
     public User findUserById(Long userId) {
         return userRepository.findUserById(userId);
+    }
+
+    @Override
+    public List<User> findUsersByParams(String username, Long id, Long orderId) {
+        CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot = query.from(User.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        if (username != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("username"), username));
+        }
+        if (id != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("id"), id));
+        }
+        if (orderId != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("order_id"), orderId));
+        }
+        query.where(predicates.toArray(new Predicate[0]));
+        return entityManager.createQuery(query).getResultList();
     }
 }

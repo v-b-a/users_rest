@@ -1,10 +1,8 @@
 package com.hexlet.sprong.lesson.hexlet_spring_lesson.config;
 
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.dao.CarRepository;
-import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.CarService;
-import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.CarServiceImpl;
-import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.UserService;
-import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.UserServiceImpl;
+import com.hexlet.sprong.lesson.hexlet_spring_lesson.dao.OrderRepository;
+import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,5 +16,9 @@ public class IntroAppConfig {
     @Bean
     public CarService carService(CarRepository carRepository, UserService userService) {
         return new CarServiceImpl(carRepository, userService);
+    }
+    @Bean
+    public OrderService orderService(OrderRepository orderRepository, UserService userService, CarService carService) {
+        return new OrderServiceImpl(orderRepository , userService, carService);
     }
 }
