@@ -3,6 +3,7 @@ package com.hexlet.sprong.lesson.hexlet_spring_lesson.service;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.exception.CustomException;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.User;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserDto;
+import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserParams;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface UserService {
 
     User findUserById(Long userId);
 
-    List<User> findUsersByParams(String username, Long id, Long orderId);
+    List<User> findUsersByParams(UserParams userParams);
 }

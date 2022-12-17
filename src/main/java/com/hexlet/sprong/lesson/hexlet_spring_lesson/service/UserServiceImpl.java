@@ -9,6 +9,7 @@ import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.Document;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.User;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.CarDto;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserDto;
+import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserParams;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -100,20 +101,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersByParams(String username, Long id, Long orderId) {
+    public List<User> findUsersByParams(UserParams userParams) {
         CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> userRoot = query.from(User.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        if (username != null) {
-            predicates.add(criteriaBuilder.equal(userRoot.get("username"), username));
+        if (userParams.getUsername() != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("username"), userParams.getUsername()));
         }
-        if (id != null) {
-            predicates.add(criteriaBuilder.equal(userRoot.get("id"), id));
+        if (userParams.getId() != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("id"), userParams.getId()));
         }
-        if (orderId != null) {
-            predicates.add(criteriaBuilder.equal(userRoot.get("order_id"), orderId));
+        if (userParams.getOrderId() != null) {
+            predicates.add(criteriaBuilder.equal(userRoot.get("order_id"), userParams.getOrderId()));
         }
         query.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(query).getResultList();

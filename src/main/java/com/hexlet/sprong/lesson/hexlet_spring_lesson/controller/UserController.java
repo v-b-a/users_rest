@@ -3,6 +3,7 @@ package com.hexlet.sprong.lesson.hexlet_spring_lesson.controller;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.exception.CustomException;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.model_entity.User;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserDto;
+import com.hexlet.sprong.lesson.hexlet_spring_lesson.pojo_dto.UserParams;
 import com.hexlet.sprong.lesson.hexlet_spring_lesson.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,7 @@ public class UserController {
         }
     }
     @GetMapping("/filter")
-    public List<User> getUsersByFilter(
-            @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "order_id", required = false) Long orderId
-    ) {
-        return userService.findUsersByParams(username, id, orderId);
+    public List<User> getUsersByFilter(UserParams userParams) {
+        return userService.findUsersByParams(userParams);
     }
 }
